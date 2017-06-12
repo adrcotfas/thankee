@@ -2,6 +2,8 @@ package com.example.adrcotfas.thankee;
 
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,12 +14,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
 public class MainActivity extends AppCompatActivity
         implements IMainView, NavigationView.OnNavigationItemSelectedListener {
+
+    @BindView(R.id.entry_list) RecyclerView reciclerView;
+    @BindView(R.id.drawer_layout) DrawerLayout drawer;
+    @BindView(R.id.nav_view) NavigationView navigationView;
 
     @OnClick(R.id.fab)
     public void onFabClick(View view) {
@@ -37,13 +44,16 @@ public class MainActivity extends AppCompatActivity
         mUnbinder = ButterKnife.bind(this);
         mPresenter = new MainPresenter(this);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        reciclerView.setHasFixedSize(true);
+        LinearLayoutManager llm = new LinearLayoutManager(getApplicationContext());
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        reciclerView.setLayoutManager(llm);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
@@ -115,5 +125,10 @@ public class MainActivity extends AppCompatActivity
         Snackbar.make(getWindow().getDecorView().getRootView(),
                 "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
+    }
+
+    @Override
+    public void displayEntries() {
+
     }
 }

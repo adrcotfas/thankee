@@ -6,10 +6,15 @@ public class MainPresenter implements IMainPresenter{
 
     MainPresenter(IMainView view) {
         this.mView = view;
+        displayEntries();
     }
 
     @Override
     public void onFabClick() {
         mView.goToAddEditActivity();
+    }
+
+    private void displayEntries() {
+        mView.displayEntries();
     }
 }
